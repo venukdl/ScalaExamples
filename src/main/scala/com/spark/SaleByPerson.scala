@@ -15,25 +15,27 @@ object SaleByPerson extends App {
     //  val sqlContext = new SQLContext(sc)
     //  import sqlContext._
 
-    val sparkSession = SparkSession.builder.
+    //Create spark session
+    val spark = SparkSession.builder.
       master("local")
       .appName("spark session example")
+      .config("spark.some.config.option", "config-value")
       //.enableHiveSupport()
       .getOrCreate()
 
     // Importing the SparkSession gives access to all the SQL functions and implicit conversions.
-    import sparkSession.implicits._
+    import spark.implicits._
     val log = LogManager.getRootLogger
 
-    //val df = sparkSession.read.option("header","true").csv("src/main/resources/data/sales.csv")
+    //val df = spark.read.option("header","true").csv("src/main/resources/data/sales.csv")
 
-    val df = sparkSession.read
+    val df = spark.read
       .option("header", "true")
       .option("inferSchema", "true")
       .csv("src/main/resources/data/sales.csv")
-      .cache
 
-    sparkSession.stop()
+
+    spark.stop()
   }
 
 }
