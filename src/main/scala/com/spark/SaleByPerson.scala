@@ -31,9 +31,13 @@ object SaleByPerson extends App {
 
     val df = spark.read
       .option("header", "true")
+      .format("csv")
       .option("inferSchema", "true")
       .csv("src/main/resources/data/sales.csv")
 
+    df.select("person").write.format("csv").save("src/main/resources/output/sales")
+
+      //df.rdd.collect()
 
     spark.stop()
   }
